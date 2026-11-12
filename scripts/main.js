@@ -33,7 +33,7 @@ const mobileApply       = document.querySelector(".mobile-apply");
 const mobileApplyTrigger= document.querySelector(".mobile-apply-trigger");
 const applicationModal  = document.querySelector("#application-modal");
 const modalSlot         = document.querySelector(".modal-form-slot");
-const applicationEndpoint = "https://script.google.com/macros/s/AKfycbweLh2EvAiwrn9RdhZRFeK6ElrZaj6_u_uD7YREzUYUjzJ8wrsXAwIa9jidu-b3T_m9Rg/exec"; // Add the deployed Apps Script /exec URL here.
+const applicationEndpoint = "https://script.google.com/macros/s/AKfycbweLh2EvAiwrn9RdhZRFeK6ElrZaj6_u_uD7YREzUYUjzJ8wrsXAwIa9jidu-b3T_m9Rg/exec";
 
 /** True when OS/browser prefers reduced motion */
 const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -167,7 +167,7 @@ function clearFormError(form) {
   errorMessage.hidden = true;
 }
 
-function finishSubmission(requestId, success) {
+function finishSubmission(requestId, success, responseReceived) {
   const pending = pendingSubmissions.get(requestId);
   if (!pending) return;
 
@@ -186,7 +186,9 @@ function finishSubmission(requestId, success) {
 
   showFormError(
     pending.form,
-    "We couldn't confirm that your application was received. Please wait a moment before trying again, or contact us if the problem continues."
+    responseReceived
+      ? "We couldn't save your application. Please check your details and contact us if the problem continues."
+      : "We couldn't confirm whether your application was received. It may already be saved, so please contact us before submitting again."
   );
 }
 
@@ -195,8 +197,13 @@ window.addEventListener("message", (event) => {
   if (!result || result.type !== "application-submission-result") return;
 
   const pending = pendingSubmissions.get(result.requestId);
-  if (!pending || event.source !== pending.frame.contentWindow) return;
-  finishSubmission(result.requestId, result.success === true);
+  const isAppsScriptOrigin =
+    event.origin === "https://script.google.com" ||
+    event.origin === "https://script.googleusercontent.com" ||
+    (event.origin.startsWith("https://") &&
+      event.origin.endsWith("-script.googleusercontent.com"));
+  if (!pending || !isAppsScriptOrigin) return;
+  finishSubmission(result.requestId, result.success === true, true);
 });
 
 /**

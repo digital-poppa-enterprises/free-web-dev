@@ -189,7 +189,7 @@ function submissionResponse_(requestId, success) {
 
   const html = [
     "<!doctype html><html><head><meta charset=\"utf-8\"></head><body>",
-    "<script>window.parent.postMessage(",
+    "<script>window.top.postMessage(",
     message,
     ", \"*\");</script>",
     "</body></html>"

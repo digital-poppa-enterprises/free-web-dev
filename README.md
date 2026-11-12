@@ -82,6 +82,10 @@ this repository or the public website.
 9. Publish the updated site on GitHub Pages and submit a test application.
    Confirm it appears in the private Drive JSON file before sharing the form.
 
+When updating `Code.gs`, save it in Apps Script, then use **Deploy → Manage
+deployments → Edit → New version → Deploy**. This updates the existing `/exec`
+deployment URL without changing the URL in `main.js`.
+
 Each stored record includes the submission time, name, email, optional phone,
 project description, and whether it has been included in a digest. A successful
 weekly email marks those submissions as sent; the JSON file retains the records.
