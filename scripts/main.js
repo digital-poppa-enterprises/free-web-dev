@@ -1,6 +1,6 @@
 /**
  * main.js — Digital Poppa Enterprises: First 50 Web App Campaign
- * ==================================================================
+ * ---------------------------------------------------------------
  * All client-side behaviour for the static site.
  * No framework, no build step — plain ES2017+ JavaScript.
  *
@@ -9,22 +9,17 @@
  *   2.  Mobile navigation menu
  *   3.  Sticky header state (IntersectionObserver on campaign bar)
  *   4.  Scroll-reveal animations
- *   5.  Form setup — validation, success state
- *   6.  Desktop application rail — docking / stopping logic
- *   7.  Mobile application modal — open, close, focus trap
+ *   5.  Form setup - validation and Apps Script submission
+ *   6.  Desktop application rail - docking / stopping logic
+ *   7.  Mobile application modal - open, close, focus trap
  *   8.  Mobile floating "Apply now" CTA button
  *   9.  FAQ accordion
  *   10. In-page smooth scroll (anchor links)
  *
- * To add real form submissions (email or spreadsheet):
- *   Find handleFormSuccess() below and replace its body with
- *   a fetch() POST to Formspree or Web3Forms.
+ * Configure the Apps Script endpoint as described in README.md.
  */
 
-
-// ============================================================
 // 1. DOM REFERENCES AND SHARED STATE
-// ============================================================
 
 const menuToggle        = document.querySelector(".menu-toggle");
 const mobileMenu        = document.querySelector("#mobile-menu");
@@ -38,6 +33,7 @@ const mobileApply       = document.querySelector(".mobile-apply");
 const mobileApplyTrigger= document.querySelector(".mobile-apply-trigger");
 const applicationModal  = document.querySelector("#application-modal");
 const modalSlot         = document.querySelector(".modal-form-slot");
+const applicationEndpoint = "https://script.google.com/macros/s/AKfycbweLh2EvAiwrn9RdhZRFeK6ElrZaj6_u_uD7YREzUYUjzJ8wrsXAwIa9jidu-b3T_m9Rg/exec"; // Add the deployed Apps Script /exec URL here.
 
 /** True when OS/browser prefers reduced motion */
 const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -47,13 +43,12 @@ let hasApplied = false;
 
 /** Lazily-created clone of originalForm that lives inside the modal */
 let modalForm = null;
+let submissionInProgress = false;
+const pendingSubmissions = new Map();
 
-
-// ============================================================
 // 2. MOBILE NAVIGATION MENU
 //    Toggle .is-open class and ARIA attributes on the button
 //    and the menu panel. Clicking any menu link closes the menu.
-// ============================================================
 
 /** Collapse the mobile menu and reset ARIA state */
 function closeMenu() {
@@ -79,13 +74,12 @@ document
   .querySelectorAll(".mobile-menu a")
   .forEach((link) => link.addEventListener("click", closeMenu));
 
-
-// ============================================================
+// ---------------------------------------------------------------
 // 3. STICKY HEADER STATE
 //    When the campaign bar scrolls out of view, add .is-sticky
 //    to the header so CSS can apply a shadow / background change.
 //    rootMargin: "-36px" keeps a 36 px buffer before triggering.
-// ============================================================
+// ---------------------------------------------------------------
 
 const headerObserver = new IntersectionObserver(
   ([entry]) => {
@@ -96,13 +90,13 @@ const headerObserver = new IntersectionObserver(
 if (campaignBar) headerObserver.observe(campaignBar);
 
 
-// ============================================================
+// ---------------------------------------------------------------
 // 4. SCROLL-REVEAL ANIMATIONS
 //    Elements with .reveal fade + slide in once they enter the
 //    viewport. .reveal-delay staggers paired siblings.
 //    If the user prefers reduced motion or IntersectionObserver
 //    is unavailable, every element is shown immediately.
-// ============================================================
+// ---------------------------------------------------------------
 
 const revealItems = document.querySelectorAll(".reveal");
 
@@ -124,9 +118,9 @@ if (reducedMotion || !("IntersectionObserver" in window)) {
 }
 
 
-// ============================================================
+// ---------------------------------------------------------------
 // 5. FORM SETUP — VALIDATION AND SUCCESS STATE
-// ============================================================
+// ---------------------------------------------------------------
 
 /**
  * Mark a field as valid or invalid.
@@ -140,45 +134,147 @@ function setInvalid(field, invalid) {
 }
 
 /**
- * Run after a successful form submission.
- * Hides the floating CTA and sets the global hasApplied flag.
+ * Mark all form instances as submitted and hide the floating CTA.
  */
 function markApplied() {
   hasApplied = true;
+  document
+    .querySelectorAll(".application-card")
+    .forEach((form) => {
+      form.classList.add("is-success");
+      clearFormError(form);
+    });
   mobileApply?.classList.remove("is-visible");
   mobileApply?.setAttribute("aria-hidden", "true");
 }
 
 /**
- * Handle a valid form submission.
- * Currently shows a local success state and sets hasApplied.
- *
- * TO ADD REAL EMAIL DELIVERY (Formspree):
- *   1. Sign up at https://formspree.io — free tier = 50 submissions/month.
- *   2. Create a form, copy your endpoint (e.g. https://formspree.io/f/xnqkyzab).
- *   3. Replace this function body with:
- *
- *      async function handleFormSuccess(form) {
- *        const data = new FormData(form);
- *        try {
- *          const res = await fetch("https://formspree.io/f/YOUR_FORM_ID", {
- *            method: "POST", body: data,
- *            headers: { Accept: "application/json" },
- *          });
- *          if (res.ok) {
- *            form.classList.add("is-success");
- *            markApplied();
- *          } else {
- *            // show inline error message
- *          }
- *        } catch { /* network error — show fallback message *\/ }
- *      }
- *
+ * Show a submission error without discarding the user's answers.
+ * @param {HTMLFormElement} form
+ * @param {string} message
+ */
+function showFormError(form, message) {
+  const errorMessage = form.querySelector(".form-error");
+  if (!errorMessage) return;
+  errorMessage.textContent = message;
+  errorMessage.hidden = false;
+}
+
+function clearFormError(form) {
+  const errorMessage = form.querySelector(".form-error");
+  if (!errorMessage) return;
+  errorMessage.textContent = "";
+  errorMessage.hidden = true;
+}
+
+function finishSubmission(requestId, success) {
+  const pending = pendingSubmissions.get(requestId);
+  if (!pending) return;
+
+  pendingSubmissions.delete(requestId);
+  window.clearTimeout(pending.timeout);
+  pending.frame.remove();
+  pending.button.disabled = false;
+  pending.button.textContent = pending.buttonLabel;
+  pending.form.removeAttribute("aria-busy");
+  submissionInProgress = false;
+
+  if (success) {
+    markApplied();
+    return;
+  }
+
+  showFormError(
+    pending.form,
+    "We couldn't confirm that your application was received. Please wait a moment before trying again, or contact us if the problem continues."
+  );
+}
+
+window.addEventListener("message", (event) => {
+  const result = event.data;
+  if (!result || result.type !== "application-submission-result") return;
+
+  const pending = pendingSubmissions.get(result.requestId);
+  if (!pending || event.source !== pending.frame.contentWindow) return;
+  finishSubmission(result.requestId, result.success === true);
+});
+
+/**
+ * Submit the validated form to the Apps Script endpoint through a hidden
+ * iframe so the static site does not need cross-origin response access.
  * @param {HTMLFormElement} form
  */
 function handleFormSuccess(form) {
-  form.classList.add("is-success"); // CSS reveals the .form-success <p>
-  markApplied();
+  if (submissionInProgress) {
+    showFormError(form, "Your application is still being submitted. Please wait.");
+    return;
+  }
+
+  let endpoint;
+  try {
+    endpoint = new URL(applicationEndpoint);
+  } catch (error) {
+    showFormError(form, "Applications are not connected yet. Please contact us directly.");
+    return;
+  }
+
+  if (
+    endpoint.protocol !== "https:" ||
+    endpoint.hostname !== "script.google.com" ||
+    !/^\/macros\/s\/[^/]+\/exec$/.test(endpoint.pathname)
+  ) {
+    showFormError(form, "The application service is not configured correctly. Please contact us.");
+    return;
+  }
+
+  const button = form.querySelector('button[type="submit"]');
+  if (!button) {
+    showFormError(form, "The application form could not be submitted. Please contact us.");
+    return;
+  }
+
+  clearFormError(form);
+  submissionInProgress = true;
+  const buttonLabel = button.textContent;
+  button.disabled = true;
+  button.textContent = "Submitting application...";
+  form.setAttribute("aria-busy", "true");
+
+  const requestId = window.crypto?.randomUUID
+    ? window.crypto.randomUUID()
+    : `${Date.now()}-${Math.random().toString(36).slice(2)}`;
+  let requestField = form.querySelector('input[name="requestId"]');
+  if (!requestField) {
+    requestField = document.createElement("input");
+    requestField.type = "hidden";
+    requestField.name = "requestId";
+    form.append(requestField);
+  }
+  requestField.value = requestId;
+
+  const frame = document.createElement("iframe");
+  frame.name = `application-submission-${requestId}`;
+  frame.title = "Application submission response";
+  frame.hidden = true;
+  frame.tabIndex = -1;
+  document.body.append(frame);
+
+  const timeout = window.setTimeout(
+    () => finishSubmission(requestId, false),
+    30000
+  );
+  pendingSubmissions.set(requestId, { form, button, buttonLabel, frame, timeout });
+
+  form.action = endpoint.href;
+  form.method = "post";
+  form.target = frame.name;
+
+  try {
+    form.submit();
+  } catch (error) {
+    console.error("Could not submit the application.", error);
+    finishSubmission(requestId, false);
+  }
 }
 
 /**
@@ -216,8 +312,14 @@ function setupForm(form) {
 
   // Clear invalid state as the user types / changes a field
   form.querySelectorAll("input, select, textarea").forEach((field) => {
-    field.addEventListener("input",  () => setInvalid(field, false));
-    field.addEventListener("change", () => setInvalid(field, false));
+    field.addEventListener("input", () => {
+      setInvalid(field, false);
+      clearFormError(form);
+    });
+    field.addEventListener("change", () => {
+      setInvalid(field, false);
+      clearFormError(form);
+    });
   });
 }
 

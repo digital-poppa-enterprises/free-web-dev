@@ -1,219 +1,147 @@
-<!doctype html>
-<!--
-  ============================================================
-  Digital Poppa Enterprises — First 50 Web App Campaign
-  Static Site (GitHub Pages ready)
-  ============================================================
-  Converted from FastAPI + Jinja2 to plain HTML / CSS / JS.
-
-  What changed from the original:
-    - app.py, requirements.txt deleted — no Python needed
-    - Jinja2 template tags were empty ({}) so nothing needed
-      removing from the HTML itself
-    - /static/assets/...  →  assets/...   (relative paths)
-    - /static/styles.css?v=…  →  styles.css
-    - /static/main.js?v=…     →  main.js
-    - Google Fonts <link> tags kept as-is (they're external CDN)
-    - Form submits to a local success state; see main.js
-      handleFormSuccess() for instructions on wiring real email
-      (Formspree, Web3Forms, etc.)
-
-  Folder layout:
-    index.html          ← this file
-    styles.css          ← unchanged from static/styles.css
-    main.js             ← updated & fully commented
-    assets/
-      favicon.png
-      logo-primary.png
-      clipart/
-        clipart-*.svg
-
-  Deploy on GitHub Pages:
-    1. Push this folder to a GitHub repo root.
-    2. Settings → Pages → Source: main / (root).
-    3. Live at https://<user>.github.io/<repo>/
-  ============================================================
--->
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <!-- Primary meta -->
-    <meta
-      name="description"
-      content="The first 50 suitable clients can have an agreed web app built for free by Digital Poppa Enterprises. You only pay for hosting and applicable external costs."
-    />
-    <meta name="theme-color" content="#0D4388" />
+<head>
+  <!-- Document encoding and viewport -->
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <!-- Favicon — relative path, works from any subdirectory on GitHub Pages -->
-    <link rel="icon" href="assets/favicon.png" type="image/png" />
+  <!-- Search and site identity metadata -->
+  <meta name="description"
+    content="The first 50 suitable clients can have an agreed web app built for free by Digital Poppa Enterprises. You only pay for hosting and applicable external costs.">
+  <meta name="author" content="Digital Poppa Enterprises">
 
-    <!-- Google Fonts — loaded from external CDN, no change needed -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@600;700;800&display=swap"
-      rel="stylesheet"
-    />
+  <!-- Browser theme -->
+  <meta name="theme-color" content="#0D4388">
 
-    <!-- Stylesheet — cache-busting query param removed; not needed on static hosting -->
-    <link rel="stylesheet" href="styles.css" />
+  <!-- Open Graph metadata for social sharing -->
+  <meta property="og:title" content="Get Your Web App Built for Free | Digital Poppa Enterprises">
+  <meta property="og:description"
+    content="The first 50 suitable clients can have an agreed web app built for free by Digital Poppa Enterprises. You only pay for hosting and applicable external costs.">
+  <meta property="og:image" content="#">
+  <meta property="og:url" content="#">
 
-    <title>Get Your Web App Built for Free | Digital Poppa Enterprises</title>
-  </head>
+  <!-- Twitter Card metadata for social sharing -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Get Your Web App Built for Free | Digital Poppa Enterprises">
+  <meta name="twitter:description"
+    content="The first 50 suitable clients can have an agreed web app built for free by Digital Poppa Enterprises. You only pay for hosting and applicable external costs.">
+  <meta name="twitter:image" content="#">
+  <meta name="twitter:url" content="#">
 
-  <body>
+  <!-- Favicon - relative path, works from any subdirectory on GitHub Pages -->
+  <link rel="icon" href="images/favicon.png" type="image/png">
 
-    <!-- ============================================================
-         SKIP LINK — lets keyboard/screen-reader users jump straight
-         to the main content, bypassing the header navigation.
-    ============================================================ -->
-    <a class="skip-link" href="#main-content">Skip to content</a>
+  <!-- Google Fonts - loaded from external CDN, no change needed -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@600;700;800&display=swap"
+    rel="stylesheet">
 
+  <!-- Stylesheets: mobile-first base followed by wider-screen overrides -->
+  <link rel="stylesheet" href="styles/normalize.css">
+  <link rel="stylesheet" href="styles/small.css">
+  <link rel="stylesheet" href="styles/larger.css" media="(min-width: 761px)">
 
-    <!-- ============================================================
-         CAMPAIGN BAR — slim announcement banner at the very top.
-         The JS header observer watches this element to decide when
-         to apply the .is-sticky class to the header below.
-    ============================================================ -->
-    <div class="campaign-bar">
-      <div class="container campaign-bar-inner">
-        <span class="campaign-dot" aria-hidden="true"></span
-        ><span>First 50 suitable clients: get your web app built for free.</span>
-      </div>
+  <!-- Page title -->
+  <title>Get Your Web App Built for Free | Digital Poppa Enterprises</title>
+
+  <!-- JavaScript: main.js handles form submission, modal, and other interactive features -->
+  <script src="scripts/main.js" defer></script>
+</head>
+
+<body>
+  <a class="skip-link" href="#main-content">Skip to content</a>
+
+  <div class="campaign-bar">
+    <div class="container campaign-bar-inner">
+      <span class="campaign-dot" aria-hidden="true"></span><span>First 50 suitable clients: get your web app built for
+        free.</span>
+    </div>
+  </div>
+
+  <header class="site-header" id="site-header">
+    <div class="container header-inner">
+
+      <!-- Brand / logo -->
+      <a class="brand" href="#top" aria-label="Digital Poppa Enterprises home"><img src="images/logo-primary.png"
+          alt=""><span>Digital Poppa Enterprises</span></a>
+
+      <!-- Desktop navigation -->
+      <nav class="desktop-nav" aria-label="Primary navigation">
+        <a href="#possibilities">What you can build</a>
+        <a href="#process">How it works</a>
+        <a href="#faq">Questions</a>
+        <a href="https://digital-poppa-enterprises.vercel.app/contact" target="_blank" rel="noopener"
+          aria-label="Contact Digital Poppa">Contact</a>
+      </nav>
+
+      <!-- Mobile hamburger button — hidden on desktop via CSS -->
+      <button class="menu-toggle" type="button" aria-label="Open navigation" aria-expanded="false"
+        aria-controls="mobile-menu">
+        <span></span><span></span><span></span>
+      </button>
     </div>
 
+    <!-- Mobile slide-down menu - toggled via JS (closeMenu / menuToggle click) -->
+    <div class="mobile-menu" id="mobile-menu" aria-hidden="true">
+      <nav aria-label="Mobile navigation">
+        <a href="#possibilities">What you can build</a>
+        <a href="#offer">What is included</a>
+        <a href="#process">How it works</a>
+        <a href="#faq">Questions</a>
+        <a href="https://digital-poppa-enterprises.vercel.app/contact" target="_blank" rel="noopener"
+          aria-label="Contact Digital Poppa">Contact</a>
+      </nav>
+    </div>
+  </header>
 
-    <!-- ============================================================
-         SITE HEADER — sticky nav bar.
-         .is-sticky is toggled by JS (headerObserver) once the
-         campaign bar scrolls out of view.
-         Mobile hamburger menu is toggled by the menu-toggle button.
-    ============================================================ -->
-    <header class="site-header" id="site-header">
-      <div class="container header-inner">
+  <main id="main-content">
+    <div class="hero-wrap">
+      <section class="hero" id="top" aria-labelledby="hero-title">
 
-        <!-- Brand / logo -->
-        <a class="brand" href="#top" aria-label="Digital Poppa Enterprises home"
-          ><img src="assets/logo-primary.png" alt="" /><span
-            >Digital Poppa Enterprises</span
-          ></a
-        >
+        <!-- Decorative background orbs (CSS-animated blobs) -->
+        <div class="hero-orb hero-orb-one" aria-hidden="true"></div>
+        <div class="hero-orb hero-orb-two" aria-hidden="true"></div>
 
-        <!-- Desktop navigation -->
-        <nav class="desktop-nav" aria-label="Primary navigation">
-          <a href="#possibilities">What you can build</a>
-          <a href="#process">How it works</a>
-          <a href="#faq">Questions</a>
-        </nav>
-
-        <!-- WhatsApp contact (desktop) -->
-        <a
-          class="button button-small header-cta whatsapp-link"
-          href="https://wa.me/2348100702509?text=I%20am%20here%20to%20inquire%20for%20the%20free%20website%20development"
-          target="_blank"
-          rel="noopener"
-          aria-label="Contact Digital Poppa on WhatsApp"
-          >Contact</a
-        >
-
-        <!-- Mobile hamburger button — hidden on desktop via CSS -->
-        <button
-          class="menu-toggle"
-          type="button"
-          aria-label="Open navigation"
-          aria-expanded="false"
-          aria-controls="mobile-menu"
-        >
-          <span></span><span></span><span></span>
-        </button>
-
-      </div>
-
-      <!-- Mobile slide-down menu — toggled via JS (closeMenu / menuToggle click) -->
-      <div class="mobile-menu" id="mobile-menu" aria-hidden="true">
-        <nav aria-label="Mobile navigation">
-          <a href="#possibilities">What you can build</a>
-          <a href="#offer">What is included</a>
-          <a href="#process">How it works</a>
-          <a href="#faq">Questions</a>
-        </nav>
-        <a
-          class="button button-full whatsapp-link"
-          href="https://wa.me/2348100702509?text=I%20am%20here%20to%20inquire%20for%20the%20free%20website%20development"
-          target="_blank"
-          rel="noopener"
-          aria-label="Contact Digital Poppa on WhatsApp"
-          >Contact</a
-        >
-      </div>
-    </header>
-
-
-    <!-- ============================================================
-         MAIN CONTENT
-    ============================================================ -->
-    <main id="main-content">
-
-      <!-- hero-wrap contains both the hero section and the sticky
-           application-rail (desktop right column). JS measures this
-           wrapper to calculate when the rail should dock (fix) and
-           when it should stop just above the final CTA. -->
-      <div class="hero-wrap">
-
-        <!-- --------------------------------------------------
-             HERO — primary above-the-fold offer section.
-             Two decorative orb divs provide the background glow.
-        -------------------------------------------------- -->
-        <section class="hero" id="top" aria-labelledby="hero-title">
-          <!-- Decorative background orbs (CSS-animated blobs) -->
-          <div class="hero-orb hero-orb-one" aria-hidden="true"></div>
-          <div class="hero-orb hero-orb-two" aria-hidden="true"></div>
-
-          <div class="container hero-grid">
-            <div class="hero-copy reveal">
-              <p class="eyebrow eyebrow-light">First 50 clients</p>
-              <h1 id="hero-title">Get your web app built <em>for free.</em></h1>
-              <p class="hero-subtitle">You only pay for hosting.</p>
-              <p class="hero-body">
-                Have a business process, customer experience, or idea that could
-                work better as a web app? Tell us what you need. The first 50
-                suitable clients can have an agreed web app built with no
-                development charge.
-              </p>
-              <p class="hero-note">
-                <span aria-hidden="true">✓</span> Suitable projects only. We
-                confirm scope, fit, timeline, hosting, and any external services
-                before work begins.
-              </p>
-              <div class="hero-actions">
-                <a class="button button-light" href="#apply"
-                  >Apply for the First 50</a
-                ><a class="hero-link" href="#possibilities"
-                  >See what a web app could do
-                  <span aria-hidden="true">↓</span></a
-                >
-              </div>
-              <!-- Hero illustration -->
-              <div class="hero-art">
-                <img
-                  src="assets/clipart/clipart-web-development.svg"
-                  alt="Illustration of web development and a digital product"
-                />
-              </div>
+        <div class="container hero-grid">
+          <div class="hero-copy reveal">
+            <p class="eyebrow eyebrow-light">First 50 clients</p>
+            <h1 id="hero-title">Get your web app built <em>for free.</em></h1>
+            <p class="hero-subtitle">You only pay for hosting.</p>
+            <p class="hero-body">
+              Have a business process, customer experience, or idea that could
+              work better as a web app? Tell us what you need. The first 50
+              suitable clients can have an agreed web app built with no
+              development charge.
+            </p>
+            <p class="hero-note">
+              <span aria-hidden="true">✓</span> Suitable projects only. We
+              confirm scope, fit, timeline, hosting, and any external services
+              before work begins.
+            </p>
+            <div class="hero-actions">
+              <a class="button button-light" href="#apply">Apply for the First 50</a><a class="hero-link"
+                href="#possibilities">See what a web app could do
+                <span aria-hidden="true">↓</span></a>
             </div>
+            <!-- Hero illustration -->
+            <div class="hero-art">
+              <img src="images/clipart/clipart-web-development.svg"
+                alt="Illustration of web development and a digital product">
+            </div>
+          </div>
 
-            <!-- Desktop: this empty placeholder reserves the right-column
+          <!-- Desktop: this empty placeholder reserves the right-column
                  space so text does not overlap the absolutely-positioned
                  application rail. On mobile it collapses to zero height. -->
-            <div class="application-placeholder" aria-hidden="true"></div>
-          </div>
-        </section>
+          <div class="application-placeholder" aria-hidden="true"></div>
+        </div>
+      </section>
 
-
-        <!-- --------------------------------------------------
-             APPLICATION RAIL — the reservation form.
+      <!-- --------------------------------------------------
+             APPLICATION RAIL - the reservation form.
 
              DESKTOP: absolutely positioned inside .hero-wrap, then
                fixed (docked) by JS (updateDesktopFormRail) once the
@@ -226,625 +154,510 @@
              JS clones this form into the modal on mobile. Any
              changes to the form here are automatically mirrored.
 
-             TO COLLECT REAL SUBMISSIONS — see handleFormSuccess()
-             in main.js for a Formspree drop-in example.
+             Real submissions use the Google Apps Script setup in README.md.
         -------------------------------------------------- -->
-        <div class="application-rail reveal reveal-delay" id="apply">
-          <form class="application-card" id="application-form" novalidate>
-            <!-- Form header -->
-            <div class="form-top">
-              <span class="form-stamp">50 places</span
-              ><span class="form-step">01 / Apply</span>
-            </div>
-            <h2>Apply for one of the first 50 places.</h2>
-            <p class="form-helper">
-              Tell us what you want to build and we will contact you to
-              understand the idea.
-            </p>
+      <div class="application-rail reveal reveal-delay" id="apply">
+        <form class="application-card" id="application-form" novalidate>
 
-            <!-- Form fields -->
-            <div class="form-fields">
-              <label
-                >Full name<input
-                  name="fullName"
-                  type="text"
-                  autocomplete="name"
-                  required
-              /></label>
-              <label
-                >Email address<input
-                  name="email"
-                  type="email"
-                  autocomplete="email"
-                  required
-              /></label>
-              <label
-                >Phone or preferred contact<input
-                  name="phone"
-                  type="tel"
-                  autocomplete="tel"
-              /></label>
-            </div>
+          <!-- Form header -->
+          <div class="form-top">
+            <span class="form-stamp">50 places</span><span class="form-step">01 / Apply</span>
+          </div>
+          <h2>Apply for one of the first 50 places.</h2>
+          <p class="form-helper">
+            Tell us what you want to build and we will contact you to
+            understand the idea.
+          </p>
 
-            <button class="button button-primary button-full" type="submit">
-              Apply for the First 50
-            </button>
+          <!-- Form fields -->
+          <div class="form-fields">
+            <label>Full name<input name="fullName" type="text" autocomplete="name" maxlength="120" required></label>
+            <label>Email address<input name="email" type="email" autocomplete="email" maxlength="254" required></label>
+            <label>Phone or preferred contact<input name="phone" type="tel" autocomplete="tel" maxlength="80"></label>
+            <label>What would you like to build?<textarea name="projectDescription" rows="4" maxlength="2000"
+                placeholder="Tell us about the problem, your users, or the idea." required></textarea></label>
+          </div>
 
-            <!-- Disclaimer shown below the submit button -->
-            <p class="form-fine">
-              Applying does not guarantee acceptance. We review suitability
-              before confirming any project.
-            </p>
+          <div class="form-honeypot" aria-hidden="true">
+            <label>Leave this field empty<input name="website" type="text" tabindex="-1" autocomplete="off"></label>
+          </div>
 
-            <!-- Success message — hidden via CSS until .is-success is added by JS -->
-            <p class="form-success" role="status" aria-live="polite">
-              Thanks. We have received your application. We will contact you to
-              understand your idea and discuss the next step.
-            </p>
-          </form>
-        </div>
+          <button class="button button-primary button-full" type="submit">
+            Apply for the First 50
+          </button>
 
-      </div><!-- /hero-wrap -->
+          <!-- Disclaimer shown below the submit button -->
+          <p class="form-fine">
+            Your details are stored privately in Google Drive and included in a
+            weekly email summary so we can review your application and contact you.
+            Applying does not guarantee acceptance.
+          </p>
 
+          <p class="form-error" role="alert" hidden></p>
 
-      <!-- desktop-rail-content: all sections below the hero.
+          <!-- Success message shown after the server confirms the submission -->
+          <p class="form-success" role="status" aria-live="polite">
+            Thanks. We have received your application. We will contact you to
+            understand your idea and discuss the next step.
+          </p>
+        </form>
+      </div>
+    </div><!-- /hero-wrap -->
+
+    <!-- desktop-rail-content: all sections below the hero.
            On desktop this div has a right margin equal to the
            rail's width so the rail (which is fixed) doesn't cover
            any content. On mobile/tablet it's full width. -->
-      <div class="desktop-rail-content">
-
-
-        <!-- --------------------------------------------------
-             INTRO STRIP — single-line offer context bar.
-        -------------------------------------------------- -->
-        <section class="intro-strip reveal" aria-label="What a web app can do">
-          <div class="container intro-strip-inner">
-            <p>
-              A web app helps people <strong>do something</strong>, not just read
-              about your business.
-            </p>
-            <a href="#possibilities"
-              ><span aria-hidden="true">→</span> Explore the possibilities</a
-            >
-          </div>
-        </section>
-
-
-        <!-- --------------------------------------------------
-             POSSIBILITIES — four illustrated use-case cards.
-        -------------------------------------------------- -->
-        <section
-          class="section section-paper"
-          id="possibilities"
-          aria-labelledby="possibilities-title"
-        >
-          <div class="container">
-            <div class="section-heading reveal">
-              <p class="eyebrow">What could we build for you?</p>
-              <h2 id="possibilities-title">
-                Make the work easier for the people who use it.
-              </h2>
-              <p>
-                A web app can be a customer experience, an internal tool, or a
-                simple system that removes a repetitive step from everyday work.
-              </p>
-            </div>
-
-            <div class="possibility-list">
-
-              <!-- 01 Bookings -->
-              <article class="possibility possibility-one reveal">
-                <div class="possibility-art">
-                  <img
-                    src="assets/clipart/clipart-booking-system.svg"
-                    alt="Illustration of a calendar and scheduling process"
-                  />
-                </div>
-                <div class="possibility-copy">
-                  <span class="item-number">01</span>
-                  <h3>Bookings and appointments</h3>
-                  <p>
-                    Let people request, schedule, or manage appointments online.
-                  </p>
-                </div>
-              </article>
-
-              <!-- 02 Customer portals -->
-              <article class="possibility possibility-two reveal">
-                <div class="possibility-copy">
-                  <span class="item-number">02</span>
-                  <h3>Customer portals</h3>
-                  <p>
-                    Give customers a clear place to view information, submit
-                    requests, or track progress.
-                  </p>
-                </div>
-                <div class="possibility-art">
-                  <img
-                    src="assets/clipart/clipart-online-application.svg"
-                    alt="Illustration of a person completing an online application"
-                  />
-                </div>
-              </article>
-
-              <!-- 03 Dashboards -->
-              <article class="possibility possibility-three reveal">
-                <div class="possibility-art">
-                  <img
-                    src="assets/clipart/clipart-dashboard.svg"
-                    alt="Illustration of a web app interface and dashboard"
-                  />
-                </div>
-                <div class="possibility-copy">
-                  <span class="item-number">03</span>
-                  <h3>Dashboards and information</h3>
-                  <p>
-                    Bring useful business information into one readable place.
-                  </p>
-                </div>
-              </article>
-
-              <!-- 04 Orders & workflow -->
-              <article class="possibility possibility-four reveal">
-                <div class="possibility-copy">
-                  <span class="item-number">04</span>
-                  <h3>Orders, inventory, and workflows</h3>
-                  <p>
-                    Organize products, stock, orders, and team processes around
-                    the way your work actually happens.
-                  </p>
-                </div>
-                <div class="possibility-art">
-                  <img
-                    src="assets/clipart/clipart-workflow.svg"
-                    alt="Illustration of a connected project workflow"
-                  />
-                </div>
-              </article>
-
-            </div><!-- /possibility-list -->
-          </div>
-        </section>
-
-
-        <!-- --------------------------------------------------
-             OFFER — transparent breakdown of what is free vs paid.
-        -------------------------------------------------- -->
-        <section
-          class="section section-blue-light"
-          id="offer"
-          aria-labelledby="offer-title"
-        >
-          <div class="container offer-grid">
-            <div class="section-heading reveal">
-              <p class="eyebrow">Clear terms, clear next step</p>
-              <h2 id="offer-title">
-                Free development does not mean unclear terms.
-              </h2>
-              <p>
-                We want you to understand exactly what the First 50 offer covers
-                before you apply.
-              </p>
-              <div class="offer-art">
-                <img
-                  src="assets/clipart/clipart-hosting.svg"
-                  alt="Illustration of a healthy server representing hosting infrastructure"
-                />
-              </div>
-            </div>
-
-            <div class="offer-panels reveal reveal-delay">
-              <!-- What Digital Poppa covers -->
-              <article class="term-panel term-free">
-                <span class="term-icon" aria-hidden="true">+</span>
-                <p class="eyebrow">Digital Poppa covers</p>
-                <h3>No development charge</h3>
-                <p>
-                  For the first 50 suitable projects, Digital Poppa will not
-                  charge a development fee for the agreed web app build.
-                </p>
-                <span class="term-tag">Build included</span>
-              </article>
-              <!-- What the client pays -->
-              <article class="term-panel term-paid">
-                <span class="term-icon" aria-hidden="true">✓</span>
-                <p class="eyebrow">The client pays for</p>
-                <h3>Hosting and agreed running costs</h3>
-                <p>
-                  The client pays for hosting and any applicable external
-                  services, infrastructure, domains, payment providers,
-                  subscriptions, or other agreed costs needed to run the web app.
-                </p>
-                <span class="term-tag">Running costs</span>
-              </article>
-              <!-- Footer note -->
-              <p class="terms-note">
-                <span aria-hidden="true">✓</span> We explain the scope, fit,
-                timeline, hosting, and external costs before work begins.
-              </p>
-            </div>
-          </div>
-        </section>
-
-
-        <!-- --------------------------------------------------
-             SUITABILITY — who is a good fit for the offer.
-        -------------------------------------------------- -->
-        <section
-          class="section section-paper suitability"
-          aria-labelledby="suitable-title"
-        >
-          <div class="container suitability-grid">
-            <!-- Illustration -->
-            <div class="suitability-art reveal">
-              <div class="art-note">Problem → useful system</div>
-              <img
-                src="assets/clipart/clipart-idea-to-app.svg"
-                alt="Illustration of an idea being developed into a practical plan"
-              />
-            </div>
-            <!-- Copy + checklist -->
-            <div class="section-heading reveal reveal-delay">
-              <p class="eyebrow">Is your project suitable?</p>
-              <h2 id="suitable-title">
-                Bring us the problem. We will help assess the fit.
-              </h2>
-              <p>
-                You do not need to arrive with a perfect technical brief. Tell us
-                what you want people to do, what is difficult today, and what a
-                better process would look like.
-              </p>
-              <ul class="check-list">
-                <li>There is a clear problem or opportunity to explore.</li>
-                <li>
-                  A web application could make a meaningful part of the work
-                  easier.
-                </li>
-                <li>The scope can be discussed and agreed clearly.</li>
-                <li>
-                  The client understands that hosting and agreed external costs
-                  are separate from development.
-                </li>
-              </ul>
-              <a class="button button-outline" href="#apply"
-                >Talk us through your idea</a
-              >
-            </div>
-          </div>
-        </section>
-
-
-        <!-- --------------------------------------------------
-             PROCESS — four numbered steps explaining what happens
-             after someone applies.
-        -------------------------------------------------- -->
-        <section
-          class="section section-deep"
-          id="process"
-          aria-labelledby="process-title"
-        >
-          <div class="container process-grid">
-            <div class="process-copy reveal">
-              <p class="eyebrow eyebrow-light">How applying works</p>
-              <h2 id="process-title">
-                A simple conversation before a serious build.
-              </h2>
-              <p>
-                Applying begins a conversation. It does not automatically confirm
-                acceptance into the First 50 offer.
-              </p>
-              <!-- Illustration -->
-              <div class="process-art">
-                <img
-                  src="assets/clipart/clipart-workflow.svg"
-                  alt="Illustration of a connected project process"
-                />
-              </div>
-            </div>
-
-            <!-- Numbered steps list -->
-            <div class="process-steps reveal reveal-delay">
-              <article>
-                <span>01</span>
-                <div>
-                  <h3>Tell us what you need</h3>
-                  <p>Submit the short application form.</p>
-                </div>
-              </article>
-              <article>
-                <span>02</span>
-                <div>
-                  <h3>We understand the problem</h3>
-                  <p>We ask about your users, process, and intended outcome.</p>
-                </div>
-              </article>
-              <article>
-                <span>03</span>
-                <div>
-                  <h3>We assess the fit</h3>
-                  <p>
-                    We discuss whether the idea suits the First 50 offer and what
-                    scope is realistic.
-                  </p>
-                </div>
-              </article>
-              <article>
-                <span>04</span>
-                <div>
-                  <h3>We agree the next step</h3>
-                  <p>
-                    We confirm scope, timeline, hosting, and any external costs
-                    before work begins.
-                  </p>
-                </div>
-              </article>
-            </div>
-          </div>
-        </section>
-
-
-        <!-- --------------------------------------------------
-             CAPABILITY — brief overview of what Digital Poppa builds.
-        -------------------------------------------------- -->
-        <section
-          class="section section-white capability"
-          aria-labelledby="capability-title"
-        >
-          <div class="container capability-grid">
-            <div class="capability-copy reveal">
-              <p class="eyebrow">A glimpse of what we build</p>
-              <h2 id="capability-title">
-                Practical digital work from a technology partner.
-              </h2>
-              <p>
-                Digital Poppa Enterprises builds practical websites, web
-                applications, digital tools, and technology solutions around real
-                business needs. This campaign focuses on web apps, because the
-                right system can make a process easier for both a business and the
-                people it serves.
-              </p>
-              <!-- Three-point methodology summary -->
-              <div class="capability-points">
-                <span>01 <b>Understand the problem</b></span
-                ><span>02 <b>Shape the scope</b></span
-                ><span>03 <b>Build something useful</b></span>
-              </div>
-              <a class="text-link" href="#apply">Apply with your idea</a>
-            </div>
-            <div class="capability-art reveal reveal-delay">
-              <img
-                src="assets/clipart/clipart-web-development.svg"
-                alt="Illustration of web development and a digital product"
-              />
-            </div>
-          </div>
-        </section>
-
-
-        <!-- --------------------------------------------------
-             REPEAT CTA — mid-page conversion nudge before the FAQ.
-        -------------------------------------------------- -->
-        <section class="section repeat-apply" aria-labelledby="repeat-title">
-          <div class="container repeat-grid">
-            <div class="repeat-copy reveal">
-              <p class="eyebrow eyebrow-light">Your idea is the starting point</p>
-              <h2 id="repeat-title">Have an idea worth discussing?</h2>
-              <p>
-                Tell us what you want your web app to help people do. We will
-                contact you to understand the idea and discuss whether it fits the
-                First 50 offer.
-              </p>
-            </div>
-            <div class="repeat-action reveal reveal-delay">
-              <a class="button button-light" href="#apply"
-                >Apply for the First 50</a
-              >
-              <p>
-                Suitable projects only. We confirm the details before work begins.
-              </p>
-            </div>
-          </div>
-        </section>
-
-
-        <!-- --------------------------------------------------
-             FAQ — accordion of common questions.
-             JS targets [data-accordion-group] and .faq-trigger.
-             Only one item is open at a time.
-        -------------------------------------------------- -->
-        <section
-          class="section section-paper faq-section"
-          id="faq"
-          aria-labelledby="faq-title"
-        >
-          <div class="container faq-grid">
-            <div class="section-heading reveal">
-              <p class="eyebrow">Questions, answered</p>
-              <h2 id="faq-title">Know what happens before you apply.</h2>
-              <p>
-                Still not sure whether your idea is a fit? Start with a
-                conversation.
-              </p>
-            </div>
-
-            <!-- Accordion group — JS targets [data-accordion-group] -->
-            <div class="faq-list reveal reveal-delay" data-accordion-group>
-
-              <!-- Q1 — open state driven by JS, all start closed -->
-              <div class="faq-item">
-                <button
-                  class="faq-trigger"
-                  type="button"
-                  aria-expanded="false"
-                  aria-controls="faq-1"
-                >
-                  Is the web app really free?<span aria-hidden="true">+</span>
-                </button>
-                <div class="faq-answer" id="faq-1">
-                  <p>
-                    For the first 50 suitable projects, there is no development
-                    charge for the agreed web app build. Hosting and any
-                    applicable external services or infrastructure are paid for by
-                    the client.
-                  </p>
-                </div>
-              </div>
-
-              <!-- Q2 -->
-              <div class="faq-item">
-                <button
-                  class="faq-trigger"
-                  type="button"
-                  aria-expanded="false"
-                  aria-controls="faq-2"
-                >
-                  Does applying guarantee that my project will be accepted?<span
-                    aria-hidden="true"
-                    >+</span
-                  >
-                </button>
-                <div class="faq-answer" id="faq-2">
-                  <p>
-                    No. We review the idea, scope, suitability, timeline, and
-                    hosting arrangements before confirming whether it fits the
-                    offer.
-                  </p>
-                </div>
-              </div>
-
-              <!-- Q3 -->
-              <div class="faq-item">
-                <button
-                  class="faq-trigger"
-                  type="button"
-                  aria-expanded="false"
-                  aria-controls="faq-3"
-                >
-                  What kinds of web apps can you build?<span aria-hidden="true"
-                    >+</span
-                  >
-                </button>
-                <div class="faq-answer" id="faq-3">
-                  <p>
-                    Examples include booking systems, customer portals, inventory
-                    tools, order systems, ecommerce experiences, dashboards,
-                    membership systems, data collection tools, and internal
-                    workflow applications.
-                  </p>
-                </div>
-              </div>
-
-              <!-- Q4 -->
-              <div class="faq-item">
-                <button
-                  class="faq-trigger"
-                  type="button"
-                  aria-expanded="false"
-                  aria-controls="faq-4"
-                >
-                  Do I need a technical brief before applying?<span
-                    aria-hidden="true"
-                    >+</span
-                  >
-                </button>
-                <div class="faq-answer" id="faq-4">
-                  <p>
-                    No. Tell us what you want people to do and what is difficult
-                    today. We can ask questions and help clarify the idea.
-                  </p>
-                </div>
-              </div>
-
-              <!-- Q5 -->
-              <div class="faq-item">
-                <button
-                  class="faq-trigger"
-                  type="button"
-                  aria-expanded="false"
-                  aria-controls="faq-5"
-                >
-                  What will I pay for?<span aria-hidden="true">+</span>
-                </button>
-                <div class="faq-answer" id="faq-5">
-                  <p>
-                    The client pays for hosting and any applicable external
-                    services, infrastructure, domains, subscriptions, payment
-                    providers, or other running costs agreed for the project.
-                  </p>
-                </div>
-              </div>
-
-            </div><!-- /data-accordion-group -->
-          </div>
-        </section>
-
-      </div><!-- /desktop-rail-content -->
-
+    <div class="desktop-rail-content">
 
       <!-- --------------------------------------------------
-           FINAL CTA — closing conversion section.
-           The large decorative "50" is CSS-positioned behind
-           the content via z-index.
-      -------------------------------------------------- -->
-      <section class="final-cta" aria-labelledby="final-title">
-        <div class="final-number" aria-hidden="true">50</div>
-        <div class="container final-grid">
-          <div class="final-copy reveal">
-            <p class="eyebrow eyebrow-light">First 50 clients</p>
-            <h2 id="final-title">
-              Your idea could be the next useful web app.
+             INTRO STRIP — single-line offer context bar.
+        -------------------------------------------------- -->
+      <section class="intro-strip reveal" aria-label="What a web app can do">
+        <div class="container intro-strip-inner">
+          <p>
+            A web app helps people <strong>do something</strong>, not just read
+            about your business.
+          </p>
+          <a href="#possibilities"><span aria-hidden="true">→</span> Explore the possibilities</a>
+        </div>
+      </section>
+
+      <!-- --------------------------------------------------
+             POSSIBILITIES — four illustrated use-case cards.
+        -------------------------------------------------- -->
+      <section class="section section-paper" id="possibilities" aria-labelledby="possibilities-title">
+        <div class="container">
+          <div class="section-heading reveal">
+            <p class="eyebrow">What could we build for you?</p>
+            <h2 id="possibilities-title">
+              Make the work easier for the people who use it.
             </h2>
             <p>
-              Apply for the First 50. If the project is suitable, Digital Poppa
-              will build the agreed web app with no development charge. You only
-              pay for hosting and any applicable external costs.
+              A web app can be a customer experience, an internal tool, or a
+              simple system that removes a repetitive step from everyday work.
             </p>
-            <a class="button button-light" href="#apply"
-              >Apply for the First 50</a
-            >
           </div>
-          <div class="final-art reveal reveal-delay">
-            <img
-              src="assets/clipart/clipart-idea-to-app.svg"
-              alt="Illustration of an idea becoming a practical digital plan"
-            />
+
+          <div class="possibility-list">
+
+            <!-- 01 Bookings -->
+            <article class="possibility possibility-one reveal">
+              <div class="possibility-art">
+                <img src="images/clipart/clipart-booking-system.svg"
+                  alt="Illustration of a calendar and scheduling process">
+              </div>
+              <div class="possibility-copy">
+                <span class="item-number">01</span>
+                <h3>Bookings and appointments</h3>
+                <p>
+                  Let people request, schedule, or manage appointments online.
+                </p>
+              </div>
+            </article>
+
+            <!-- 02 Customer portals -->
+            <article class="possibility possibility-two reveal">
+              <div class="possibility-copy">
+                <span class="item-number">02</span>
+                <h3>Customer portals</h3>
+                <p>
+                  Give customers a clear place to view information, submit
+                  requests, or track progress.
+                </p>
+              </div>
+              <div class="possibility-art">
+                <img src="images/clipart/clipart-online-application.svg"
+                  alt="Illustration of a person completing an online application">
+              </div>
+            </article>
+
+            <!-- 03 Dashboards -->
+            <article class="possibility possibility-three reveal">
+              <div class="possibility-art">
+                <img src="images/clipart/clipart-dashboard.svg"
+                  alt="Illustration of a web app interface and dashboard">
+              </div>
+              <div class="possibility-copy">
+                <span class="item-number">03</span>
+                <h3>Dashboards and information</h3>
+                <p>
+                  Bring useful business information into one readable place.
+                </p>
+              </div>
+            </article>
+
+            <!-- 04 Orders & workflow -->
+            <article class="possibility possibility-four reveal">
+              <div class="possibility-copy">
+                <span class="item-number">04</span>
+                <h3>Orders, inventory, and workflows</h3>
+                <p>
+                  Organize products, stock, orders, and team processes around
+                  the way your work actually happens.
+                </p>
+              </div>
+              <div class="possibility-art">
+                <img src="images/clipart/clipart-workflow.svg" alt="Illustration of a connected project workflow">
+              </div>
+            </article>
+          </div><!-- /possibility-list -->
+        </div>
+      </section>
+
+      <!-- --------------------------------------------------
+             OFFER — transparent breakdown of what is free vs paid.
+        -------------------------------------------------- -->
+      <section class="section section-blue-light" id="offer" aria-labelledby="offer-title">
+        <div class="container offer-grid">
+          <div class="section-heading reveal">
+            <p class="eyebrow">Clear terms, clear next step</p>
+            <h2 id="offer-title">
+              Free development does not mean unclear terms.
+            </h2>
+            <p>
+              We want you to understand exactly what the First 50 offer covers
+              before you apply.
+            </p>
+            <div class="offer-art">
+              <img src="images/clipart/clipart-hosting.svg"
+                alt="Illustration of a healthy server representing hosting infrastructure">
+            </div>
+          </div>
+
+          <div class="offer-panels reveal reveal-delay">
+            <!-- What Digital Poppa covers -->
+            <article class="term-panel term-free">
+              <span class="term-icon" aria-hidden="true">+</span>
+              <p class="eyebrow">Digital Poppa covers</p>
+              <h3>No development charge</h3>
+              <p>
+                For the first 50 suitable projects, Digital Poppa will not
+                charge a development fee for the agreed web app build.
+              </p>
+              <span class="term-tag">Build included</span>
+            </article>
+            <!-- What the client pays -->
+            <article class="term-panel term-paid">
+              <span class="term-icon" aria-hidden="true">✓</span>
+              <p class="eyebrow">The client pays for</p>
+              <h3>Hosting and agreed running costs</h3>
+              <p>
+                The client pays for hosting and any applicable external
+                services, infrastructure, domains, payment providers,
+                subscriptions, or other agreed costs needed to run the web app.
+              </p>
+              <span class="term-tag">Running costs</span>
+            </article>
+            <!-- Footer note -->
+            <p class="terms-note">
+              <span aria-hidden="true">✓</span> We explain the scope, fit,
+              timeline, hosting, and external costs before work begins.
+            </p>
           </div>
         </div>
       </section>
 
-    </main><!-- /main -->
-
-
-    <!-- ============================================================
-         FOOTER
-    ============================================================ -->
-    <footer class="site-footer">
-      <div class="container footer-grid">
-        <div class="footer-brand">
-          <a class="brand brand-light" href="#top"
-            ><img src="assets/logo-primary.png" alt="" /><span
-              >Digital Poppa Enterprises</span
-            ></a
-          >
-          <p>Technology should create opportunities.</p>
+      <!-- --------------------------------------------------
+             SUITABILITY — who is a good fit for the offer.
+        -------------------------------------------------- -->
+      <section class="section section-paper suitability" aria-labelledby="suitable-title">
+        <div class="container suitability-grid">
+          <!-- Illustration -->
+          <div class="suitability-art reveal">
+            <div class="art-note">Problem → useful system</div>
+            <img src="images/clipart/clipart-idea-to-app.svg"
+              alt="Illustration of an idea being developed into a practical plan">
+          </div>
+          <!-- Copy + checklist -->
+          <div class="section-heading reveal reveal-delay">
+            <p class="eyebrow">Is your project suitable?</p>
+            <h2 id="suitable-title">
+              Bring us the problem. We will help assess the fit.
+            </h2>
+            <p>
+              You do not need to arrive with a perfect technical brief. Tell us
+              what you want people to do, what is difficult today, and what a
+              better process would look like.
+            </p>
+            <ul class="check-list">
+              <li>There is a clear problem or opportunity to explore.</li>
+              <li>
+                A web application could make a meaningful part of the work
+                easier.
+              </li>
+              <li>The scope can be discussed and agreed clearly.</li>
+              <li>
+                The client understands that hosting and agreed external costs
+                are separate from development.
+              </li>
+            </ul>
+            <a class="button button-outline" href="#apply">Talk us through your idea</a>
+          </div>
         </div>
-        <div class="footer-links">
-          <a href="#possibilities">What you can build</a
-          ><a href="#offer">What is included</a
-          ><a href="#process">How it works</a><a href="#faq">Questions</a>
+      </section>
+
+      <!-- --------------------------------------------------
+             PROCESS — four numbered steps explaining what happens
+             after someone applies.
+        -------------------------------------------------- -->
+      <section class="section section-deep" id="process" aria-labelledby="process-title">
+        <div class="container process-grid">
+          <div class="process-copy reveal">
+            <p class="eyebrow eyebrow-light">How applying works</p>
+            <h2 id="process-title">
+              A simple conversation before a serious build.
+            </h2>
+            <p>
+              Applying begins a conversation. It does not automatically confirm
+              acceptance into the First 50 offer.
+            </p>
+            <!-- Illustration -->
+            <div class="process-art">
+              <img src="images/clipart/clipart-workflow.svg" alt="Illustration of a connected project process">
+            </div>
+          </div>
+
+          <!-- Numbered steps list -->
+          <div class="process-steps reveal reveal-delay">
+            <article>
+              <span>01</span>
+              <div>
+                <h3>Tell us what you need</h3>
+                <p>Submit the short application form.</p>
+              </div>
+            </article>
+            <article>
+              <span>02</span>
+              <div>
+                <h3>We understand the problem</h3>
+                <p>We ask about your users, process, and intended outcome.</p>
+              </div>
+            </article>
+            <article>
+              <span>03</span>
+              <div>
+                <h3>We assess the fit</h3>
+                <p>
+                  We discuss whether the idea suits the First 50 offer and what
+                  scope is realistic.
+                </p>
+              </div>
+            </article>
+            <article>
+              <span>04</span>
+              <div>
+                <h3>We agree the next step</h3>
+                <p>
+                  We confirm scope, timeline, hosting, and any external costs
+                  before work begins.
+                </p>
+              </div>
+            </article>
+          </div>
         </div>
-        <div class="footer-action">
-          <span>Have an idea?</span><a href="#apply">Apply for the First 50</a>
+      </section>
+
+      <!-- --------------------------------------------------
+             CAPABILITY — brief overview of what Digital Poppa builds.
+        -------------------------------------------------- -->
+      <section class="section section-white capability" aria-labelledby="capability-title">
+        <div class="container capability-grid">
+          <div class="capability-copy reveal">
+            <p class="eyebrow">A glimpse of what we build</p>
+            <h2 id="capability-title">
+              Practical digital work from a technology partner.
+            </h2>
+            <p>
+              Digital Poppa Enterprises builds practical websites, web
+              applications, digital tools, and technology solutions around real
+              business needs. This campaign focuses on web apps, because the
+              right system can make a process easier for both a business and the
+              people it serves.
+            </p>
+            <!-- Three-point methodology summary -->
+            <div class="capability-points">
+              <span>01 <b>Understand the problem</b></span><span>02 <b>Shape the scope</b></span><span>03 <b>Build
+                  something useful</b></span>
+            </div>
+            <a class="text-link" href="#apply">Apply with your idea</a>
+          </div>
+          <div class="capability-art reveal reveal-delay">
+            <img src="images/clipart/clipart-web-development.svg"
+              alt="Illustration of web development and a digital product">
+          </div>
+        </div>
+      </section>
+
+      <!-- --------------------------------------------------
+             REPEAT CTA — mid-page conversion nudge before the FAQ.
+        -------------------------------------------------- -->
+      <section class="section repeat-apply" aria-labelledby="repeat-title">
+        <div class="container repeat-grid">
+          <div class="repeat-copy reveal">
+            <p class="eyebrow eyebrow-light">Your idea is the starting point</p>
+            <h2 id="repeat-title">Have an idea worth discussing?</h2>
+            <p>
+              Tell us what you want your web app to help people do. We will
+              contact you to understand the idea and discuss whether it fits the
+              First 50 offer.
+            </p>
+          </div>
+          <div class="repeat-action reveal reveal-delay">
+            <a class="button button-light" href="#apply">Apply for the First 50</a>
+            <p>
+              Suitable projects only. We confirm the details before work begins.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- --------------------------------------------------
+             FAQ — accordion of common questions.
+             JS targets [data-accordion-group] and .faq-trigger.
+             Only one item is open at a time.
+        -------------------------------------------------- -->
+      <section class="section section-paper faq-section" id="faq" aria-labelledby="faq-title">
+        <div class="container faq-grid">
+          <div class="section-heading reveal">
+            <p class="eyebrow">Questions, answered</p>
+            <h2 id="faq-title">Know what happens before you apply.</h2>
+            <p>
+              Still not sure whether your idea is a fit? Start with a
+              conversation.
+            </p>
+          </div>
+
+          <!-- Accordion group — JS targets [data-accordion-group] -->
+          <div class="faq-list reveal reveal-delay" data-accordion-group>
+
+            <!-- Q1 — open state driven by JS, all start closed -->
+            <div class="faq-item">
+              <button class="faq-trigger" type="button" aria-expanded="false" aria-controls="faq-1">
+                Is the web app really free?<span aria-hidden="true">+</span>
+              </button>
+              <div class="faq-answer" id="faq-1">
+                <p>
+                  For the first 50 suitable projects, there is no development
+                  charge for the agreed web app build. Hosting and any
+                  applicable external services or infrastructure are paid for by
+                  the client.
+                </p>
+              </div>
+            </div>
+
+            <!-- Q2 -->
+            <div class="faq-item">
+              <button class="faq-trigger" type="button" aria-expanded="false" aria-controls="faq-2">
+                Does applying guarantee that my project will be accepted?<span aria-hidden="true">+</span>
+              </button>
+              <div class="faq-answer" id="faq-2">
+                <p>
+                  No. We review the idea, scope, suitability, timeline, and
+                  hosting arrangements before confirming whether it fits the
+                  offer.
+                </p>
+              </div>
+            </div>
+
+            <!-- Q3 -->
+            <div class="faq-item">
+              <button class="faq-trigger" type="button" aria-expanded="false" aria-controls="faq-3">
+                What kinds of web apps can you build?<span aria-hidden="true">+</span>
+              </button>
+              <div class="faq-answer" id="faq-3">
+                <p>
+                  Examples include booking systems, customer portals, inventory
+                  tools, order systems, ecommerce experiences, dashboards,
+                  membership systems, data collection tools, and internal
+                  workflow applications.
+                </p>
+              </div>
+            </div>
+
+            <!-- Q4 -->
+            <div class="faq-item">
+              <button class="faq-trigger" type="button" aria-expanded="false" aria-controls="faq-4">
+                Do I need a technical brief before applying?<span aria-hidden="true">+</span>
+              </button>
+              <div class="faq-answer" id="faq-4">
+                <p>
+                  No. Tell us what you want people to do and what is difficult
+                  today. We can ask questions and help clarify the idea.
+                </p>
+              </div>
+            </div>
+
+            <!-- Q5 -->
+            <div class="faq-item">
+              <button class="faq-trigger" type="button" aria-expanded="false" aria-controls="faq-5">
+                What will I pay for?<span aria-hidden="true">+</span>
+              </button>
+              <div class="faq-answer" id="faq-5">
+                <p>
+                  The client pays for hosting and any applicable external
+                  services, infrastructure, domains, subscriptions, payment
+                  providers, or other running costs agreed for the project.
+                </p>
+              </div>
+            </div>
+
+          </div><!-- /data-accordion-group -->
+        </div>
+      </section>
+
+    </div><!-- /desktop-rail-content -->
+
+    <!-- --------------------------------------------------
+           FINAL CTA — closing conversion section.
+           The large decorative "50" is CSS-positioned behind
+           the content via z-index.
+      -------------------------------------------------- -->
+    <section class="final-cta" aria-labelledby="final-title">
+      <div class="final-number" aria-hidden="true">50</div>
+      <div class="container final-grid">
+        <div class="final-copy reveal">
+          <p class="eyebrow eyebrow-light">First 50 clients</p>
+          <h2 id="final-title">
+            Your idea could be the next useful web app.
+          </h2>
+          <p>
+            Apply for the First 50. If the project is suitable, Digital Poppa
+            will build the agreed web app with no development charge. You only
+            pay for hosting and any applicable external costs.
+          </p>
+          <a class="button button-light" href="#apply">Apply for the First 50</a>
+        </div>
+        <div class="final-art reveal reveal-delay">
+          <img src="images/clipart/clipart-idea-to-app.svg"
+            alt="Illustration of an idea becoming a practical digital plan">
         </div>
       </div>
-      <div class="container footer-bottom">
-        <span>Digital Poppa Enterprises</span
-        ><span>Suitable projects only. Terms confirmed before work begins.</span>
+    </section>
+  </main><!-- /main -->
+
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <div class="container footer-grid">
+      <div class="footer-brand">
+        <a class="brand brand-light" href="#top"><img src="images/logo-primary.png" alt=""><span>Digital Poppa
+            Enterprises</span></a>
+        <p>Turn Your Dreams into Gains</p>
       </div>
-    </footer>
+      <div class="footer-links">
+        <a href="#possibilities">What you can build</a><a href="#offer">What is included</a><a href="#process">How it
+          works</a><a href="#faq">Questions</a>
+      </div>
+      <div class="footer-action">
+        <span>Have an idea?</span><a href="#apply">Apply for the First 50</a>
+      </div>
+    </div>
+    <div class="container footer-bottom">
+      <span>Digital Poppa Enterprises</span><span>Suitable projects only. Terms confirmed before work begins.</span>
+    </div>
+  </footer>
 
-
-    <!-- ============================================================
+  <!-- ============================================================
          FLOATING "APPLY NOW" BUTTON (mobile / tablet ≤ 1100 px)
          Shown by JS (mobileObserver + syncMobileApply) once:
            - The user has scrolled past the main application form
@@ -852,54 +665,32 @@
            - hasApplied is false (user hasn't submitted yet)
          aria-hidden is toggled alongside .is-visible by JS.
     ============================================================ -->
-    <div class="mobile-apply" aria-hidden="true">
-      <button
-        class="mobile-apply-trigger"
-        type="button"
-        aria-controls="application-modal"
-        aria-haspopup="dialog"
-      >
-        Apply now
-      </button>
-    </div>
+  <div class="mobile-apply" aria-hidden="true">
+    <button class="mobile-apply-trigger" type="button" aria-controls="application-modal" aria-haspopup="dialog">
+      Apply now
+    </button>
+  </div>
 
-
-    <!-- ============================================================
+  <!-- ============================================================
          APPLICATION MODAL (mobile / tablet)
          Hidden by default ([hidden] attribute).
          JS clones the #application-form into .modal-form-slot on
          first open (lazy clone), so the two forms always stay in
          sync structurally. Focus trap is managed in main.js.
     ============================================================ -->
-    <div class="application-modal" id="application-modal" hidden>
-      <!-- Semi-transparent backdrop — clicking it closes the modal -->
-      <div class="modal-backdrop" data-modal-close></div>
-      <div
-        class="modal-dialog"
-        role="dialog"
-        aria-modal="true"
-        aria-labelledby="modal-title"
-      >
-        <!-- Close button -->
-        <button
-          class="modal-close"
-          type="button"
-          aria-label="Close application form"
-          data-modal-close
-        >
-          ×
-        </button>
-        <p class="eyebrow">First 50 clients</p>
-        <h2 id="modal-title">Apply for one of the first 50 places.</h2>
-        <!-- Form is injected here by JS (openApplicationModal) -->
-        <div class="modal-form-slot"></div>
-      </div>
+  <div class="application-modal" id="application-modal" hidden>
+    <!-- Semi-transparent backdrop — clicking it closes the modal -->
+    <div class="modal-backdrop" data-modal-close></div>
+    <div class="modal-dialog" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+      <!-- Close button -->
+      <button class="modal-close" type="button" aria-label="Close application form" data-modal-close>
+        ×
+      </button>
+      <p class="eyebrow">First 50 clients</p>
+      <h2 id="modal-title">Apply for one of the first 50 places.</h2>
+      <!-- Form is injected here by JS (openApplicationModal) -->
+      <div class="modal-form-slot"></div>
     </div>
-
-
-    <!-- Main script — loaded at the end of body so the DOM is ready.
-         (No defer needed here since it's already at the bottom.) -->
-    <script src="main.js"></script>
-
-  </body>
+  </div>
+</body>
 </html>
